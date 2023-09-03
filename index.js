@@ -75,7 +75,7 @@ function showMenu() {
     console.log(answer);
     switch (answer.menuSelection) {
       case "Add an engineer":
-        addEngineer();
+        addEngineer(); // refactor to use return statements?
         break;
       case "Add an intern":
         addIntern();
