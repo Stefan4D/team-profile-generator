@@ -21,6 +21,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 import render from "./src/page-template.js";
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
+const team = []; // array to hold all employee objects
+
 const initialQuestions = [
   // Name
   // Employee ID
@@ -64,22 +66,95 @@ const menuOptions = [
   },
 ];
 
-// When a user starts the application, they're prompted to enter the team manager's:
-// Name
-// Employee ID
-// Email address
-// Office number
+// When a user enters those requirements, the user is presented with a menu with the option to:
+// Add an engineer
+// Add an intern
+// Finish building the team
+function showMenu() {
+  inquirer.prompt(menuOptions).then((answer) => {
+    console.log(answer);
+    switch (answer.menuSelection) {
+      case "Add an engineer":
+        addEngineer();
+        break;
+      case "Add an intern":
+        addIntern();
+        break;
+      case "Finish building the team":
+        finishTeam();
+        break;
+      default:
+        console.log("Invalid selection");
+        break;
+    }
+  });
+}
+
+function addEngineer() {
+  // When a user selects the engineer option, the user is prompted to enter the following and then taken back to the menu:
+  // Engineer's Name
+  // ID
+  // Email
+  // GitHub username
+  // implement inquirer questions
+  console.log("addEngineer");
+  showMenu(); // recursively call showMenu until user selects "Finish building the team"
+}
+
+function addIntern() {
+  // When a user selects the intern option, the user is prompted to enter the following and then taken back to the menu:
+  // Intern’s name
+  // ID
+  // Email
+  // School
+  // implement inquirer questions
+  console.log("addIntern");
+  showMenu(); // recursively call showMenu until user selects "Finish building the team"
+}
+
+function finishTeam() {
+  // implement inquirer questions
+  console.log("finishTeam");
+  // write to file
+  // TODO: Call the render function and pass in an array containing all employee objects. Store the result in a variable.
+  // TODO: Write the file to the output folder.
+  // When a user decides to finish building their team, they exit the application and the HTML is generated.
+
+  // Call the render function (provided for you) and pass in an array containing all employee objects.
+
+  // The render function will generate and return a block of HTML including templated div elements for each employee.
+
+  // Create an HTML file using the HTML returned from the render function.
+
+  // Write it to a file named team.html in the output folder.
+
+  // You can use the provided variable outputPath to target this location.
+  console.log("Exiting application.");
+}
 
 // function to initialize program
 function init() {
+  // When a user starts the application, they're prompted to enter the team manager's:
+  // Name
+  // Employee ID
+  // Email address
+  // Office number
   inquirer
     .prompt(initialQuestions)
     .then((answers) => {
       console.log(answers);
+      // create a new Manager object
+      const manager = new Manager(
+        answers.managerName,
+        answers.id,
+        answers.email,
+        answers.officeNumber
+      );
+      // add the manager object to the team array
+      team.push(manager);
+      console.log(team);
 
-      inquirer
-        .prompt(menuOptions)
-        .then((menuOption) => console.log(menuOption));
+      showMenu();
 
       // writeToFile(
       //   `./output/${answers.title
@@ -104,32 +179,3 @@ function init() {
 
 // function call to initialize program
 init();
-
-// When a user enters those requirements, the user is presented with a menu with the option to:
-// Add an engineer
-// Add an intern
-// Finish building the team
-
-// When a user selects the engineer option, the user is prompted to enter the following and then taken back to the menu:
-// Engineer's Name
-// ID
-// Email
-// GitHub username
-
-// When a user selects the intern option, the user is prompted to enter the following and then taken back to the menu:
-// Intern’s name
-// ID
-// Email
-// School
-
-// When a user decides to finish building their team, they exit the application and the HTML is generated.
-
-// Call the render function (provided for you) and pass in an array containing all employee objects.
-
-// The render function will generate and return a block of HTML including templated div elements for each employee.
-
-// Create an HTML file using the HTML returned from the render function.
-
-// Write it to a file named team.html in the output folder.
-
-// You can use the provided variable outputPath to target this location.
