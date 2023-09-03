@@ -117,7 +117,17 @@ function finishTeam() {
   console.log("finishTeam");
   // write to file
   // TODO: Call the render function and pass in an array containing all employee objects. Store the result in a variable.
+  const html = render(team);
   // TODO: Write the file to the output folder.
+  // Create the output directory if it doesn't exist
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR);
+  }
+
+  fs.writeFile(outputPath, html, (err) => {
+    if (err) throw err;
+    console.log("File saved!");
+  });
   // When a user decides to finish building their team, they exit the application and the HTML is generated.
 
   // Call the render function (provided for you) and pass in an array containing all employee objects.
@@ -155,13 +165,6 @@ function init() {
       console.log(team);
 
       showMenu();
-
-      // writeToFile(
-      //   `./output/${answers.title
-      //     .replace(/\s+/g, "-")
-      //     .toLowerCase()}-README.md`,
-      //   generateMarkdown(answers)
-      // );
     })
     .catch((error) => {
       if (error.isTtyError) {
