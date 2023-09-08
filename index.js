@@ -1,23 +1,31 @@
+/*
+  *******
+  Imports
+  *******
+*/
+
 import Manager from "./lib/Manager.js";
 import Engineer from "./lib/Engineer.js";
 import Intern from "./lib/Intern.js";
+import render from "./src/page-template.js";
 
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
 
+/*
+  ****************
+  Global Variables
+  ****************
+*/
 // __dirname doesn't work with ES6 modules
 // const OUTPUT_DIR = path.resolve(__dirname, "output");
 const OUTPUT_DIR = path.resolve(process.cwd(), "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-// need to validate that this render function works with the refactor in the page-template.js file
-// const render = require("./src/page-template.js");
-import render from "./src/page-template.js";
-
 const team = []; // array to hold all employee objects
 
-// TODO: Combine and refactor arrays into core questions and per-role questions. Can use spread operator to add into new arrays.
+// TODO: IMPROVEMENT - Combine and refactor arrays into core questions and per-role questions. Can use spread operator to add into new arrays.
 const initialQuestions = [
   {
     type: "input",
@@ -102,8 +110,14 @@ const menuOptions = [
   },
 ];
 
-// TODO: Update JSDocs comments
+/*
+  *********
+  Functions
+  *********
+*/
+
 /**
+ * This shows the core application menu and returns either a function for the next action or logs an error for the default case
  * @function showMenu
  * @returns { function }
  */
@@ -121,12 +135,16 @@ function showMenu() {
         finishTeam();
         break;
       default:
-        console.log("Invalid selection");
+        console.log("Invalid selection"); // could recursively call showMenu() if invalid selection made?
         break;
     }
   });
 }
 
+/**
+ * This function adds an engineer to the team array
+ * @function addEngineer
+ */
 function addEngineer() {
   inquirer.prompt(engineerQuestions).then((answers) => {
     console.log(answers);
@@ -147,11 +165,11 @@ function addEngineer() {
   });
 }
 
+/**
+ * This function adds an intern to the team array
+ * @function addIntern
+ */
 function addIntern() {
-  // Intern’s name
-  // ID
-  // Email
-  // School
   inquirer.prompt(internQuestions).then((answers) => {
     console.log(answers);
 
@@ -171,12 +189,16 @@ function addIntern() {
   });
 }
 
+/**
+ * This function finishes the team and writes the HTML file
+ * @function finishTeam
+ */
 function finishTeam() {
   // implement inquirer questions
   console.log("finishTeam");
   // render the HTML and store in a variable
   const html = render(team);
-  // TODO: Write the file to the output folder.
+
   // Create the output directory if it doesn't exist
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR);
@@ -191,9 +213,12 @@ function finishTeam() {
   console.log("Exiting application.");
 }
 
-// function to initialize program
+/**
+ * This function initializes the application
+ * @function init
+ */
 function init() {
-  // TODO: refactor into addManager() function
+  // TODO: IMPROVEMENT - refactor into addManager() function
   inquirer
     .prompt(initialQuestions)
     .then((answers) => {
